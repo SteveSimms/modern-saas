@@ -6,7 +6,7 @@ function getEnvironmentVariable(environmentVariable: string): string {
 	if (!validateEnvironmentVariable) {
 		throw new Error(`Couldn't find environment variable: ${environmentVariable}`);
 	}
-	return environmentVariable;
+	return validateEnvironmentVariable;
 }
 
 export const ENV = {

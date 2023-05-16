@@ -1,3 +1,4 @@
+// src/hooks.server.ts
 import { ENV } from "$lib/server/env";
 import { createSupabaseServerClient } from "@supabase/auth-helpers-sveltekit";
 import type { Handle } from "@sveltejs/kit";
@@ -10,13 +11,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 	});
 
 	event.locals.getSession = async () => {
-		// helper function to get user session
 		const {
 			data: { session }
 		} = await event.locals.supabase.auth.getSession();
 		return session;
 	};
+
 	return resolve(event, {
+		/**
+		 * There´s an issue with `filterSerializedResponseHeaders` not working when using `sequence`
+		 *
+		 * https://github.com/sveltejs/kit/issues/8061
+		 */
 		filterSerializedResponseHeaders(name) {
 			return name === "content-range";
 		}
